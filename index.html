@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espacio de Repaso - FICDE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ficde-azul-dark: #134252;
+            --ficde-azul-light: #2c5c6e;
+            --ficde-naranja: #e68161;
+            --ficde-naranja-hover: #ff9f85;
+            --tarjeta-bg: #f0f4f5;
+            --input-bg: #e2e8eb;
+            --texto-principal: #0f2d38;
+            --texto-secundario: #4a636e;
+            --verde-exito: #2e7d32;
+            --verde-bg: #c8e6c9;
+            --rojo-error: #c62828;
+            --naranja-bg: #ffe0b2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--ficde-azul-dark) 0%, #0a252e 100%);
+            min-height: 100vh;
+            color: var(--texto-principal);
+            padding: 20px;
+            background-attachment: fixed;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-img { height: 50px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+
+        .module-tag {
+            background: var(--ficde-naranja);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .welcome-card {
+            background: var(--tarjeta-bg);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border-bottom: 6px solid var(--ficde-naranja);
+            margin-bottom: 30px;
+        }
+
+        .welcome-title {
+            color: var(--ficde-azul-dark);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .fede-avatar-large {
+            width: 140px; height: 140px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: var(--ficde-naranja);
+            padding: 5px;
+            box-shadow: 0 10px 25px rgba(230, 129, 97, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+            overflow: hidden;
+        }
+
+        .fede-avatar-large:hover { transform: scale(1.1); }
+
+        .fede-avatar-large img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid white;
+        }
+
+        .blocks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .block-card {
+            background: var(--tarjeta-bg);
+            padding: 30px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .block-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--ficde-naranja);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .block-icon {
+            font-size: 3rem; margin-bottom: 15px;
+            background: rgba(19, 66, 82, 0.1);
+            width: 70px; height: 70px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; color: var(--ficde-azul-dark);
+        }
+
+        .block-title { color: var(--ficde-azul-dark); font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+
+        .block-desc { color: var(--texto-secundario); font-size: 0.9rem; line-height: 1.5; }
+
+        .activity-screen {
+            display: none;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .activity-screen.active { display: grid; }
+
+        .tutor-sidebar {
+            background: var(--ficde-azul-light);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            position: sticky; top: 20px;
+        }
+
+        .tutor-bubble {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: var(--ficde-azul-dark);
+            margin-top: 20px;
+            position: relative;
+            text-align: left;
+        }
+
+        .tutor-bubble::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            border-width: 0 10px 10px;
+            border-style: solid;
+            border-color: transparent transparent rgba(255,255,255,0.95);
+            transform: translateX(-50%);
+        }
+
+        .activity-content {
+            background: var(--tarjeta-bg);
+            padding: 40px;
+            border-radius: 16px;
+            min-height: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .act-badge {
+            background: var(--ficde-naranja);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .act-title { font-size: 1.8rem; color: var(--ficde-azul-dark); margin: 15px 0; font-weight: 800; }
+
+        .act-instruction { font-size: 1.1rem; color: var(--texto-secundario); margin-bottom: 30px; }
+
+        .student-input {
+            width: 100%;
+            height: 150px;
+            padding: 20px;
+            background: var(--input-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: var(--ficde-azul-dark);
+            transition: all 0.3s;
+        }
+
+        .student-input:focus { background: white; border-color: var(--ficde-naranja); outline: none; }
+
+        .fill-input {
+            border: none;
+            border-bottom: 2px solid var(--ficde-naranja);
+            background: transparent;
+            font-weight: 700;
+            color: var(--ficde-azul-dark);
+            text-align: center;
+            width: 150px;
+            font-size: 1.1rem;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 18px;
+            margin-top: 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            background: linear-gradient(90deg, var(--ficde-naranja), #ff9f85);
+            color: white;
+            box-shadow: 0 6px 20px rgba(230, 129, 97, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-action:hover { transform: translateY(-3px); }
+
+        .btn-back {
+            background: transparent;
+            color: var(--texto-secundario);
+            box-shadow: none;
+            border: 2px solid #ccc;
+            margin-top: 15px;
+        }
+
+        .btn-back:hover { background: #e0e0e0; color: var(--ficde-azul-dark); }
+
+        .traffic-row, .checklist-item {
+            background: white;
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .traffic-row:hover, .checklist-item:hover { border-color: var(--ficde-naranja); transform: translateX(5px); }
+
+        .traffic-btn {
+            width: 35px; height: 35px;
+            border-radius: 50%; border: 2px solid #ddd;
+            cursor: pointer;
+            opacity: 0.3;
+        }
+
+        .traffic-btn.active { opacity: 1; transform: scale(1.2); border-color: var(--ficde-azul-dark); }
+
+        .bg-green { background: #4CAF50; }
+
+        .bg-yellow { background: #FFC107; }
+
+        .bg-red { background: #f44336; }
+
+        .check-box {
+            width: 24px; height: 24px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .checklist-item.selected { border-color: var(--ficde-naranja); background: #fff5f0; }
+
+        .checklist-item.selected .check-box { background: var(--ficde-naranja); border-color: var(--ficde-naranja); color: white; }
+
+        .feedback-area {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+            display: none;
+            animation: slideUp 0.4s;
+        }
+
+        .feedback-success { background: var(--verde-bg); color: #1b5e20; border-left: 6px solid var(--verde-exito); }
+
+        .feedback-retry { background: var(--naranja-bg); color: #bf360c; border-left: 6px solid #ef6c00; }
+
+        .feedback-fail { background: #cfd8dc; color: #37474f; border-left: 6px solid #455a64; }
+
+        #musicToggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--ficde-naranja);
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .activity-screen { grid-template-columns: 1fr; }
+            .tutor-sidebar { display: flex; align-items: center; gap: 20px; }
+            .fede-avatar-large { width: 80px; height: 80px; }
+            .tutor-bubble::after { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- AUDIOS MP3 - Todos en la misma carpeta -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="chill-study-desk-focus-concentration-lofi-451180.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="saludoInicial" preload="auto" src="saludoinicial.mp3"></audio>
+    <audio id="mensaje1Ejercicios" preload="auto" src="mensaje1ejercicios.mp3"></audio>
+    <audio id="mensaje2Ejercicios" preload="auto" src="mensaje2ejercicios.mp3"></audio>
+    <audio id="mensaje3Ejercicios" preload="auto" src="mensaje3ejercicios.mp3"></audio>
+    <audio id="mensaje4Ejercicios" preload="auto" src="mensaje4ejercicios.mp3"></audio>
+    <audio id="respuestaCorrecta" preload="auto" src="respuestacorrecta.mp3"></audio>
+    <audio id="primerError" preload="auto" src="primererror.mp3"></audio>
+    <audio id="segundoError" preload="auto" src="segundoerror.mp3"></audio>
+    <audio id="loLograste" preload="auto" src="lolograste.mp3"></audio>
+
+    <audio id="hoverSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.m4a"></audio>
+    <audio id="clickSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.m4a"></audio>
+    <audio id="successSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.m4a"></audio>
+
+    <button id="musicToggle" onclick="toggleMusic()">🔇</button>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="logo.png" alt="FICDE" class="logo-img" onerror="this.style.display='none'; document.getElementById('altLogo').style.display='block'">
+                <h2 id="altLogo" style="display:none; color:white; font-weight:800;">FICDE</h2>
+            </div>
+            <div class="module-tag">Módulo el trabajo en equipo</div>
+        </header>
+
+        <div id="selectionScreen">
+            <div class="welcome-card">
+                <div class="fede-avatar-large" onclick="playAudio('saludoInicial')">
+                    <img src="personaje.gif" alt="Fede">
+                </div>
+                <h1 class="welcome-title">Espacio de Repaso Interactivo</h1>
+                <p style="color: var(--texto-secundario); font-size: 1.1rem;">Donde el conocimiento se convierte en acción</p>
+            </div>
+
+            <div class="blocks-grid">
+                <div class="block-card" onclick="startModule('sintesis')">
+                    <div class="block-icon">🧠</div>
+                    <div class="block-title">Síntesis</div>
+                    <div class="block-desc">Conceptos de diferencia entre grupo o equipo, características de un equipo de trabajo y elementos básicos del trabajo en equipo.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('analisis')">
+                    <div class="block-icon">🔍</div>
+                    <div class="block-title">Análisis Crítico</div>
+                    <div class="block-desc">Análisis de grupo de trabajo, funcionamiento grupal, factores que fortalecen al equipo.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('escenarios')">
+                    <div class="block-icon">🎬</div>
+                    <div class="block-title">Escenarios</div>
+                    <div class="block-desc">Situaciones de trabajo compartido, identificación de características del grupo y equipo, situación de bajo rendimiento, conflicto grupal.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('practica')">
+                    <div class="block-icon">⚡</div>
+                    <div class="block-title">Práctica</div>
+                    <div class="block-desc">Acciones practicas para fortalecer al equipo, bases del compromiso, buenas prácticas productivas, señales observables en los tipos de equipos.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="activityScreen" class="activity-screen">
+            <div class="tutor-sidebar">
+                <div class="fede-avatar-large" style="width: 100px; height: 100px; border-color: var(--ficde-naranja);" onclick="replayTutorMessage()">
+                    <img src="personaje.gif" alt="Fede">
+                </div>
+                <div style="flex:1;">
+                    <h3 style="color:var(--ficde-naranja); margin-bottom:5px;">Tutor Fede</h3>
+                    <div class="tutor-bubble" id="tutorMessage"></div>
+                </div>
+            </div>
+
+            <div class="activity-content" id="activityContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== GESTIÓN DE AUDIO MP3 =====
+        const audioFiles = {
+            saludoInicial: document.getElementById('saludoInicial'),
+            mensaje1: document.getElementById('mensaje1Ejercicios'),
+            mensaje2: document.getElementById('mensaje2Ejercicios'),
+            mensaje3: document.getElementById('mensaje3Ejercicios'),
+            mensaje4: document.getElementById('mensaje4Ejercicios'),
+            correcto: document.getElementById('respuestaCorrecta'),
+            error1: document.getElementById('primerError'),
+            error2: document.getElementById('segundoError'),
+            lolograste: document.getElementById('loLograste')
+        };
+
+        function playAudio(audioKey) {
+            if (audioFiles[audioKey]) {
+                audioFiles[audioKey].currentTime = 0;
+                audioFiles[audioKey].play().catch(err => console.log('Error al reproducir audio:', err));
+            }
+        }
+
+        const bgMusic = document.getElementById('bgMusic');
+        const clickSoundEl = document.getElementById('clickSound');
+        const successSoundEl = document.getElementById('successSound');
+        const hoverSoundEl = document.getElementById('hoverSound');
+
+        let musicOn = false;
+        let audioUnlocked = false;
+
+        function unlockAudio() {
+            if (audioUnlocked) return;
+            [clickSoundEl, successSoundEl, hoverSoundEl].forEach(a => {
+                a.volume = 0;
+                const p = a.play();
+                if (p) p.then(() => { a.pause(); a.currentTime = 0; a.volume = 1; }).catch(()=>{});
+            });
+            audioUnlocked = true;
+        }
+
+        document.addEventListener('pointerdown', unlockAudio, { once: true });
+        document.addEventListener('keydown', unlockAudio, { once: true });
+
+        function toggleMusic() {
+            unlockAudio();
+            if (!musicOn) {
+                bgMusic.volume = 0.1;
+                bgMusic.play().catch(() => {});
+                document.getElementById('musicToggle').innerText = '🎵';
+            } else {
+                bgMusic.pause();
+                document.getElementById('musicToggle').innerText = '🔇';
+            }
+            musicOn = !musicOn;
+        }
+
+        function playSound(type) {
+            if (!audioUnlocked) return;
+            try {
+                if (type === 'click') { clickSoundEl.currentTime=0; clickSoundEl.volume=0.8; clickSoundEl.play().catch(()=>{}); }
+                if (type === 'success') { successSoundEl.currentTime=0; successSoundEl.volume=0.8; successSoundEl.play().catch(()=>{}); }
+                if (type === 'hover') { hoverSoundEl.currentTime=0; hoverSoundEl.volume=0.2; hoverSoundEl.play().catch(()=>{}); }
+            } catch (e) {}
+        }
+
+        function wireUiSounds() {
+            document.querySelectorAll('.block-card, .btn-action, .checklist-item, .traffic-row, .fede-avatar-large').forEach(el => {
+                if (el.dataset.sound === '1') return;
+                el.dataset.sound = '1';
+                el.addEventListener('mouseenter', () => playSound('hover'));
+                el.addEventListener('click', () => playSound('click'));
+            });
+        }
+
+        window.addEventListener('load', wireUiSounds);
+
+        // ===== NORMALIZACIÓN DE TEXTO =====
+        function normalizar(txt) {
+            return txt
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase();
+        }
+
+        // ===== ACTIVIDADES: validaciones de texto simplificadas ===
+const modules = {
+
+    // ===================== SÍNTESIS =====================
+    sintesis: [
+        {
+            type: 'text',
+            badge: 'Trabajo en equipo',
+            title: 'Diferencia entre grupo y equipo',
+            instruction: 'Leé el texto y reconocé la diferencia entre grupo y equipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('grupo') || v.includes('equipo')) c++;
+                if (v.includes('objetivo') || v.includes('complementariedad')) c++;
+                if (v.includes('espacio') || v.includes('habilidades') || v.includes('interdependiente')) c++;
+                return c >= 2;
+            },
+            tutor: 'Pensá si compartir un espacio alcanza para ser equipo.',
+            explanation: 'Un grupo puede compartir un espacio sin trabajar de manera coordinada. Un equipo existe cuando las personas colaboran de forma interdependiente para alcanzar un objetivo común, complementando habilidades y conocimientos.'
+        },
+        {
+            type: 'text',
+            badge: 'Equipos de trabajo',
+            title: 'Concepto de equipo de trabajo',
+            instruction: 'Leé el texto y comprendé qué define al trabajo en equipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('interdependencia')) c++;
+                if (v.includes('confianza') || v.includes('objetivo')) c++;
+                if (v.includes('común') || v.includes('necesidad') || v.includes('colaboración')) c++;
+                return c >= 2;
+            },
+            tutor: 'Pensá qué necesitan unas personas de otras para lograr una meta.',
+            explanation: 'El trabajo en equipo implica una necesidad mutua de colaboración, confianza y complementariedad entre los integrantes para alcanzar un objetivo compartido.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Trabajo en equipo',
+            title: 'Características de un equipo de trabajo',
+            instruction: 'Seleccioná las afirmaciones que correspondan a las características de un equipo de trabajo.',
+            items: [
+                { text: 'Objetivo común', correct: true },
+                { text: 'Complementariedad de roles', correct: true },
+                { text: 'Confianza entre los miembros', correct: true },
+                { text: 'Trabajo individual aislado', correct: false },
+                { text: 'Competencia permanente entre integrantes', correct: false }
+            ],
+            tutor: 'Pensá qué condiciones permiten trabajar juntos de verdad.',
+            explanation: 'Un equipo se basa en objetivos compartidos, confianza y roles complementarios.'
+        },
+        {
+            type: 'text',
+            badge: 'Equipos de alto rendimiento',
+            title: 'Productividad y bienestar',
+            instruction: 'Leé el texto y comprendé la relación entre bienestar y productividad.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('productividad') || v.includes('bienestar')) c++;
+                if (v.includes('clima') || v.includes('equipo')) c++;
+                if (v.includes('resultados') || v.includes('satisfacción') || v.includes('integrantes') || v.includes('mayor')) c++;
+                return c >= 2;
+            },
+            tutor: 'Pensá cómo influye el ambiente en el rendimiento.',
+            explanation: 'La productividad del equipo se relaciona con el bienestar de sus integrantes. Un buen clima favorece mejores resultados y mayor satisfacción.'
+        },
+        {
+            type: 'blanks',
+            badge: 'Equipos de trabajo',
+            title: 'Elementos básicos del equipo',
+            instruction: 'Completá las frases.',
+            blanks: ['cohesión', 'prestigio', 'recursos'],
+            tutor: 'Pensá en lo que une, se gana y se aprovecha en un equipo.',
+            explanation: 'La cohesión, el prestigio y el uso de recursos sostienen al equipo.'
+        },
+        {
+            type: 'text',
+            badge: 'Funcionamiento del equipo',
+            title: 'Confianza y prestigio',
+            instruction: 'Leé el texto y analizá el vínculo entre confianza y prestigio.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('confianza') || v.includes('prestigio')) &&
+                    (v.includes('relaciones') || v.includes('competencia') || v.includes('conocimiento'))
+                );
+            },
+            tutor: 'Pensá cómo se gana la confianza en un equipo.',
+            explanation: 'La confianza surge del conocimiento mutuo y del prestigio técnico y humano que cada integrante demuestra en el trabajo cotidiano.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Equipos de alto rendimiento',
+            title: 'Indicadores de alto rendimiento',
+            instruction: 'Seleccioná las afirmaciones que correspondan a un equipo de alto rendimiento.',
+            items: [
+                { text: 'Optimiza recursos', correct: true },
+                { text: 'Mejora procedimientos', correct: true },
+                { text: 'Evita todo cambio', correct: false },
+                { text: 'Inventa nuevas formas de trabajo', correct: true },
+                { text: 'Depende solo del líder', correct: false }
+            ],
+            tutor: 'Pensá si el equipo se adapta y mejora.',
+            explanation: 'Los equipos de alto rendimiento optimizan y mejoran continuamente.'
+        },
+        {
+            type: 'text',
+            badge: 'Tipos de equipos',
+            title: 'Equipos en expansión y regresión',
+            instruction: 'Leé el texto y comprendé las diferencias entre tipos de equipos.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('expansión') || v.includes('demandas') || v.includes('distancia')) c++;
+                if (v.includes('regresión') || v.includes('enfrentan') || v.includes('recursos') || v.includes('exceden')) c++;
+                return c >= 2;
+            },
+            tutor: 'Pensá cómo influyen las demandas en el ánimo del equipo.',
+            explanation: 'Los equipos pueden estar en expansión cuando enfrentan altas demandas con recursos suficientes, o en regresión cuando no logran responder adecuadamente o sus capacidades exceden las demandas.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Tipos de equipos',
+            title: 'Características de los equipos',
+            instruction: 'Marca las afirmaciones correctas respecto a los tipos de equipos.',
+            items: [
+                { text: 'Un equipo en expansión suele enfrentar altas demandas externas.', color: 'green' },
+                { text: 'Un equipo en regresión siempre está motivado.', color: 'red' },
+                { text: 'La falta de equilibrio entre esfuerzo y recompensa afecta al equipo.', color: 'green' }
+            ],
+            tutor: 'Pensá cómo influyen las demandas y recompensas.',
+            explanation: 'El equilibrio entre esfuerzo y recompensa impacta en el equipo.'
+        },
+        {
+            type: 'text',
+            badge: 'Desarrollo grupal',
+            title: 'Etapas del desarrollo del equipo',
+            instruction: 'Leé el texto y reconocé las etapas por las que atraviesa un equipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('formación') || v.includes('normalización')) &&
+                    (v.includes('conflicto') || v.includes('rendimiento') || v.includes('etapas'))
+                );
+            },
+            tutor: 'Pensá si los equipos nacen siendo productivos.',
+            explanation: 'Los equipos atraviesan distintas etapas desde la formación hasta el rendimiento. Cada etapa requiere cuidado de las relaciones y comunicación para avanzar.'
+        }
+    ],
+
+    // ===================== ANÁLISIS =====================
+    analisis: [
+        {
+            type: 'text',
+            badge: 'Grupo y equipo',
+            title: 'Análisis crítico de la diferencia',
+            instruction: 'Leé el texto y analizá por qué no todo grupo funciona como equipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('grupo') || v.includes('equipo')) &&
+                    (v.includes('interdependencia') || v.includes('objetivo') || v.includes('interpretacion') || v.includes('coordina') || v.includes('objetivos'))
+                );
+            },
+            tutor: 'Pensá si trabajar juntos siempre implica cooperar.',
+            explanation: 'Un grupo no necesariamente coordina esfuerzos ni comparte objetivos. El equipo surge cuando existe interdependencia real y compromiso con una meta común.'
+        },
+        {
+            type: 'text',
+            badge: 'Funcionamiento grupal',
+            title: 'Confianza y desempeño',
+            instruction: 'Leé el texto y reflexioná sobre la relación entre confianza y resultados.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('confianza') || v.includes('desempeño') || v.includes('relaciones')) &&
+                    v.includes('debilita ') &&
+                    (v.includes('comunicación') || v.includes('equipo') || v.includes('afecta'))
+                );
+            },
+            tutor: 'Pensá qué pasa cuando no hay confianza.',
+            explanation: 'La falta de confianza debilita la comunicación y afecta el desempeño del equipo.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Trabajo en equipo',
+            title: 'Factores que fortalecen al equipo',
+            instruction: 'Seleccioná las afirmaciones que fortalecen el funcionamiento del equipo.',
+            items: [
+                { text: 'Roles claros', correct: true },
+                { text: 'Comunicación abierta', correct: true },
+                { text: 'Desconfianza entre integrantes', correct: false },
+                { text: 'Competencia interna constante', correct: false },
+                { text: 'Objetivos compartidos', correct: true }
+            ],
+            tutor: 'Pensá qué condiciones sostienen el trabajo conjunto.',
+            explanation: 'Objetivos, roles y comunicación fortalecen al equipo.'
+        },
+        {
+            type: 'text',
+            badge: 'Productividad',
+            title: 'Bienestar y rendimiento',
+            instruction: 'Leé el texto y analizá cómo el bienestar influye en la productividad.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('bienestar') || v.includes('productividad')) &&
+                    (v.includes('clima') || v.includes('favorece')) &&
+                    (v.includes('continuidad') || v.includes('esfuerzo') || v.includes('grupal'))
+                );
+            },
+            tutor: 'Pensá si se rinde igual en cualquier clima.',
+            explanation: 'El bienestar favorece la productividad y la continuidad del esfuerzo grupal.'
+        },
+        {
+            type: 'blanks',
+            badge: 'Equipos de trabajo',
+            title: 'Equilibrio del equipo',
+            instruction: 'Completá las frases.',
+            blanks: ['equilibrio', 'bienestar', 'rendimiento'],
+            tutor: 'Pensá en el balance entre exigencia y apoyo.',
+            explanation: 'El equilibrio y el bienestar sostienen el rendimiento.'
+        },
+        {
+            type: 'text',
+            badge: 'Tipos de equipos',
+            title: 'Expansión y regresión',
+            instruction: 'Leé el texto y analizá por qué un equipo puede entrar en regresión.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('expansión') || v.includes('regresión')) &&
+                    (v.includes('demandas') || v.includes('equipo') || v.includes('responder') || v.includes('pierde') || v.includes('motivación'))
+                );
+            },
+            tutor: 'Pensá qué pasa cuando las demandas superan las capacidades.',
+            explanation: 'La regresión aparece cuando el equipo no logra responder a las demandas o pierde motivación.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Equipos de trabajo',
+            title: 'Señales de regresión',
+            instruction: 'Seleccioná las afirmaciones que indican regresión del equipo.',
+            items: [
+                { text: 'Desmotivación', correct: true },
+                { text: 'Aumento de conflictos', correct: true },
+                { text: 'Mejora continua', correct: false },
+                { text: 'Falta de compromiso', correct: true }
+            ],
+            tutor: 'Pensá cómo se manifiesta el desgaste grupal.',
+            explanation: 'La regresión se refleja en desmotivación y conflictos.'
+        },
+        {
+            type: 'text',
+            badge: 'Desarrollo grupal',
+            title: 'Etapas del equipo',
+            instruction: 'Leé el texto y analizá el sentido de las etapas grupales.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('formación') || v.includes('conflicto') || v.includes('normalización')) &&
+                    (v.includes('etapa') || v.includes('necesaria') || v.includes('reorganizar') || v.includes('roles'))
+                );
+            },
+            tutor: 'Pensá si el conflicto siempre es negativo.',
+            explanation: 'El conflicto es una etapa necesaria para reorganizar roles y avanzar.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Desarrollo del equipo',
+            title: 'Conflicto y evolución',
+            instruction: 'Marca las afirmaciones correctas respecto a las etapas del equipo.',
+            items: [
+                { text: 'El conflicto puede favorecer el crecimiento del equipo.', color: 'green' },
+                { text: 'Los equipos productivos no atraviesan conflictos.', color: 'red' },
+                { text: 'Cada etapa requiere ajustes en la comunicación.', color: 'green' }
+            ],
+            tutor: 'Pensá si el conflicto siempre frena.',
+            explanation: 'El conflicto puede impulsar mejoras.'
+        },
+        {
+            type: 'text',
+            badge: 'Rol del líder',
+            title: 'Liderazgo y equipo',
+            instruction: 'Leé el texto y analizá el rol del líder en el desarrollo del equipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('liderazgo') || v.includes('acompañamiento')) &&
+                    (v.includes('equipo') || v.includes('influye') || v.includes('adaptando'))
+                );
+            },
+            tutor: 'Pensá cómo influye el líder en cada etapa.',
+            explanation: 'El líder acompaña al equipo adaptando su intervención a cada etapa del desarrollo.'
+        }
+    ],
+
+    // ===================== ESCENARIOS =====================
+    escenarios: [
+        {
+            type: 'text',
+            badge: 'Grupo y equipo',
+            title: 'Situación de trabajo compartido',
+            instruction: 'Leé la situación y analizá si se trata de un grupo o de un equipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    v.includes('incoherencia') ||
+                    (
+                        (v.includes('conjunto') || v.includes('laboral') || v.includes('realiza')) &&
+                        (v.includes('personas') || v.includes('tareas') || v.includes('espacio')) &&
+                        (v.includes('coordinación') || v.includes('objetivos') || v.includes('interdependencia') || v.includes('comunes'))
+                    )
+                );
+            },
+            tutor: 'Pensá si existe interdependencia entre las personas.',
+            explanation: 'La ausencia de objetivos comunes y coordinación indica que se trata de un grupo y no de un equipo.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Grupo y equipo',
+            title: 'Identificación de características',
+            instruction: 'Marca las afirmaciones correctas respecto a la situación.',
+            items: [
+                { text: 'La falta de objetivos comunes impide el trabajo en equipo.', color: 'green' },
+                { text: 'Compartir un espacio garantiza cooperación.', color: 'red' },
+                { text: 'La coordinación es clave para que exista un equipo.', color: 'green' }
+            ],
+            tutor: 'Pensá qué transforma un grupo en equipo.',
+            explanation: 'La coordinación y los objetivos comunes definen al equipo.'
+        },
+        {
+            type: 'text',
+            badge: 'Confianza',
+            title: 'Clima del equipo',
+            instruction: 'Leé la situación y analizá el impacto de la confianza.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('equipo') || v.includes('integrantes')) &&
+                    (v.includes('evitan') || v.includes('ideas') || v.includes('críticas'))
+                );
+            },
+            tutor: 'Pensá qué pasa cuando no hay confianza.',
+            explanation: 'La falta de confianza limita la participación y afecta el rendimiento del equipo.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Confianza',
+            title: 'Factores ausentes en la situación',
+            instruction: 'Seleccioná los factores que están ausentes en la situación planteada.',
+            items: [
+                { text: 'Seguridad psicológica', correct: true },
+                { text: 'Comunicación abierta', correct: true },
+                { text: 'Postura evasiva', correct: false },
+                { text: 'Apoyo entre integrantes', correct: true },
+                { text: 'Temor al error', correct: false }
+            ],
+            tutor: 'Pensá qué condiciones permiten expresarse.',
+            explanation: 'Sin confianza, la comunicación se debilita.'
+        },
+        {
+            type: 'text',
+            badge: 'Productividad',
+            title: 'Situación de bajo rendimiento',
+            instruction: 'Leé la situación y analizá la causa del bajo rendimiento.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('equipo') || v.includes('horas') || v.includes('alcanza')) &&
+                    (v.includes('cumple') || v.includes('trabajo') || v.includes('muchas'))
+                );
+            },
+            tutor: 'Pensá si el problema es tiempo o enfoque.',
+            explanation: 'La falta de prioridades y organización afecta la productividad.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Productividad',
+            title: 'Análisis del rendimiento',
+            instruction: 'Marca las afirmaciones correctas respecto a la situación.',
+            items: [
+                { text: 'Trabajar más horas siempre mejora los resultados.', color: 'red' },
+                { text: 'La organización influye en la productividad.', color: 'green' },
+                { text: 'La claridad de objetivos mejora el rendimiento.', color: 'green' }
+            ],
+            tutor: 'Pensá en cómo se usan los recursos.',
+            explanation: 'La organización mejora los resultados.'
+        },
+        {
+            type: 'text',
+            badge: 'Tipos de equipos',
+            title: 'Equipo en regresión',
+            instruction: 'Leé la situación y analizá el tipo de equipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('muestra') || v.includes('frecuentes')) &&
+                    (v.includes('desmotivación') || v.includes('falta') || v.includes('compromiso') || v.includes('conflictos'))
+                );
+            },
+            tutor: 'Pensá si el equipo avanza o retrocede.',
+            explanation: 'Las señales indican un equipo en regresión.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Tipos de equipos',
+            title: 'Señales presentes en la situación',
+            instruction: 'Seleccioná las señales propias del equipo descripto.',
+            items: [
+                { text: 'Desmotivación', correct: true },
+                { text: 'Confianza creciente', correct: false },
+                { text: 'Conflictos frecuentes', correct: true },
+                { text: 'Mejora continua', correct: false },
+                { text: 'Falta de compromiso', correct: true }
+            ],
+            tutor: 'Pensá cómo se manifiesta el desgaste.',
+            explanation: 'La desmotivación y el conflicto indican regresión.'
+        },
+        {
+            type: 'text',
+            badge: 'Desarrollo del equipo',
+            title: 'Etapa de conflicto',
+            instruction: 'Leé la situación y analizá el sentido del conflicto.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('Durante') || v.includes('etapa')) &&
+                    (v.includes('proyecto') || v.includes('surgen') || v.includes('decisiones')) &&
+                    (v.includes('desacuerdos') || v.includes('roles') || v.includes('reorganizar'))
+                );
+            },
+            tutor: 'Pensá si el conflicto puede ser parte del proceso.',
+            explanation: 'El conflicto es una etapa natural que permite reorganizar el funcionamiento del equipo.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Desarrollo del equipo',
+            title: 'Conflicto grupal',
+            instruction: 'Marca las afirmaciones correctas respecto al conflicto.',
+            items: [
+                { text: 'El conflicto puede favorecer el crecimiento del equipo.', color: 'green' },
+                { text: 'Todo conflicto tiene consecuencias negativas.', color: 'red' },
+                { text: 'La gestión del conflicto influye en la evolución del equipo.', color: 'green' }
+            ],
+            tutor: 'Pensá si el conflicto siempre frena.',
+            explanation: 'El conflicto bien gestionado impulsa mejoras.'
+        }
+    ],
+
+    // ===================== PRÁCTICA =====================
+    practica: [
+        {
+            type: 'checklist',
+            badge: 'Trabajo en equipo',
+            title: 'Acciones prácticas para fortalecer el equipo',
+            instruction: 'Seleccioná las acciones que favorecen el funcionamiento efectivo de un equipo.',
+            items: [
+                { text: 'Definir objetivos compartidos', correct: true },
+                { text: 'Clarificar roles', correct: true },
+                { text: 'Promover la comunicación', correct: true },
+                { text: 'Fomentar la desconfianza', correct: false },
+                { text: 'Evitar la participación', correct: false }
+            ],
+            tutor: 'Pensá qué acciones ordenan y unen al equipo.',
+            explanation: 'Objetivos, roles y comunicación fortalecen el equipo.'
+        },
+        {
+            type: 'text',
+            badge: 'Confianza',
+            title: 'Construcción de confianza en el equipo',
+            instruction: 'Leé el texto y aplicá criterios para construir confianza.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('confianza') || v.includes('coherencia') || v.includes('relaciones') || v.includes('gana')) &&
+                    (v.includes('construye') || v.includes('basadas') || v.includes('respeto') || v.includes('equipo'))
+                );
+            },
+            tutor: 'Pensá cómo se gana la confianza día a día.',
+            explanation: 'La confianza se construye con coherencia entre lo que se dice y lo que se hace, y con relaciones basadas en el respeto.'
+        },
+        {
+            type: 'blanks',
+            badge: 'Equipo de trabajo',
+            title: 'Bases del compromiso',
+            instruction: 'Completá las frases.',
+            blanks: ['cohesión', 'comunicación', 'coherencia'],
+            tutor: 'Pensá en qué condiciones te sentís parte.',
+            explanation: 'Cohesión, comunicación y coherencia sostienen el compromiso.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Confianza',
+            title: 'Prácticas cotidianas en el equipo',
+            instruction: 'Marca las afirmaciones correctas respecto a la confianza en el equipo.',
+            items: [
+                { text: 'La coherencia entre lo que se dice y lo que se hace fortalece la confianza.', color: 'green' },
+                { text: 'La desconfianza mejora la cooperación entre los integrantes.', color: 'red' },
+                { text: 'La confianza favorece la participación activa del equipo.', color: 'green' }
+            ],
+            tutor: 'Pensá qué actitudes generan seguridad en los demás.',
+            explanation: 'La confianza se construye con coherencia y participación.'
+        },
+        {
+            type: 'text',
+            badge: 'Productividad',
+            title: 'Organización del trabajo',
+            instruction: 'Leé el texto y aplicá criterios de organización.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('productividad') || v.includes('prioridades')) &&
+                    (v.includes('objetivos') || v.includes('resultados') || v.includes('esfuerzo') || v.includes('mejora'))
+                );
+            },
+            tutor: 'Pensá si todo esfuerzo produce resultados.',
+            explanation: 'La productividad mejora cuando el equipo organiza tareas según prioridades y objetivos claros.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Productividad',
+            title: 'Buenas prácticas productivas',
+            instruction: 'Seleccioná las prácticas que mejoran la productividad del equipo.',
+            items: [
+                { text: 'Definir prioridades', correct: true },
+                { text: 'Evitar acuerdos', correct: false },
+                { text: 'Trabajar sin planificación', correct: false },
+                { text: 'Coordinar tareas', correct: true },
+                { text: 'Establecer objetivos', correct: true }
+            ],
+            tutor: 'Pensá qué prácticas ordenan el trabajo.',
+            explanation: 'Priorizar y coordinar mejora la productividad.'
+        },
+        {
+            type: 'text',
+            badge: 'Desarrollo del equipo',
+            title: 'Manejo del conflicto',
+            instruction: 'Leé el texto y aplicá criterios para manejar conflictos.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('conflicto') || v.includes('diálogo') || v.includes('mejora')) &&
+                    (v.includes('gestionado') || v.includes('acuerdos') || v.includes('fortalecer') || v.includes('útil'))
+                );
+            },
+            tutor: 'Pensá si el conflicto puede ser útil.',
+            explanation: 'El conflicto, gestionado con diálogo, permite mejorar acuerdos y fortalecer al equipo.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Conflicto',
+            title: 'Enfoque constructivo del conflicto',
+            instruction: 'Marca las afirmaciones correctas respecto al conflicto en los equipos.',
+            items: [
+                { text: 'El conflicto siempre tiene consecuencias negativas para el equipo.', color: 'red' },
+                { text: 'El diálogo permite transformar el conflicto en una oportunidad de mejora.', color: 'green' },
+                { text: 'Ignorar el conflicto contribuye a resolverlo.', color: 'red' }
+            ],
+            tutor: 'Pensá cómo se resuelven realmente las diferencias.',
+            explanation: 'El conflicto gestionado con diálogo puede ser positivo.'
+        },
+        {
+            type: 'text',
+            badge: 'Tipos de equipos',
+            title: 'Identificación práctica',
+            instruction: 'Leé el texto y reconocé señales del tipo de equipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('expansión') || v.includes('regresión') || v.includes('avanza')) &&
+                    (v.includes('clima') || v.includes('estanca') || v.includes('motivación')) &&
+                    (v.includes('resultados') || v.includes('permiten') || v.includes('identificar'))
+                );
+            },
+            tutor: 'Pensá si el equipo avanza o se estanca.',
+            explanation: 'El clima, la motivación y los resultados permiten identificar el tipo de equipo.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Tipos de equipos',
+            title: 'Señales observables',
+            instruction: 'Seleccioná las señales propias de un equipo en expansión.',
+            items: [
+                { text: 'Mejora continua', correct: true },
+                { text: 'Conflictos permanentes sin resolución', correct: false },
+                { text: 'Uso eficiente de recursos', correct: true },
+                { text: 'Motivación alta', correct: true },
+                { text: 'Desinterés por los objetivos', correct: false }
+            ],
+            tutor: 'Pensá qué señales muestran crecimiento.',
+            explanation: 'La motivación y la mejora continua indican expansión.'
+        }
+    ]
+};
+
+        let currentModule = '';
+        let currentIndex = 0;
+        let attemptCount = 0;
+        let lastAudioModule = null;
+
+        // ===== MAPEO DE MÓDULOS A AUDIOS =====
+        const moduloAudioMap = {
+            'sintesis': 'mensaje1',
+            'analisis': 'mensaje2',
+            'escenarios': 'mensaje3',
+            'practica': 'mensaje4'
+        };
+
+        function startModule(id) {
+            playSound('click');
+            currentModule = id;
+            currentIndex = 0;
+            attemptCount = 0;
+            lastAudioModule = id;
+
+            // Reproducir el audio del módulo correspondiente
+            const audioKey = moduloAudioMap[id];
+            if (audioKey) {
+                playAudio(audioKey);
+            }
+
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('activityScreen').classList.add('active');
+
+            setTimeout(loadActivity, 300);
+        }
+
+        function loadActivity() {
+            attemptCount = 0;
+
+            if (currentIndex >= modules[currentModule].length) {
+                // Reproducir "lolograste.mp3" al terminar TODAS las preguntas
+                playAudio('lolograste');
+                playSound('success');
+                alert('¡Excelente! Completaste este bloque.');
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+                return;
+            }
+
+            const data = modules[currentModule][currentIndex];
+            const container = document.getElementById('activityContainer');
+
+            const msg = `Pregunta ${currentIndex + 1} de ${modules[currentModule].length}: ${data.tutor}`;
+            document.getElementById('tutorMessage').innerText = msg;
+
+            let html = `<span class="act-badge">${data.badge}</span>
+                        <h2 class="act-title">${data.title}</h2>
+                        <p class="act-instruction">${data.instruction}</p>`;
+
+            if (data.type === 'text') {
+                html += `<textarea id="txtInput" class="student-input" placeholder="Escribe tu respuesta con tus palabras..."></textarea>`;
+            } else if (data.type === 'blanks') {
+                html += `<div style="font-size:1.2rem; line-height:2.5;">`;
+                data.blanks.forEach((b, i) => {
+                    html += `${i + 1}. <input type="text" class="fill-input" data-ans="${b}"> <br>`;
+                });
+                html += `</div>`;
+            } else if (data.type === 'traffic') {
+                data.items.forEach((item, i) => {
+                    html += `<div class="traffic-row" id="row-${i}">
+                                <span>${item.text}</span>
+                                <div style="display:flex; gap:10px;">
+                                    <div class="traffic-btn bg-green" onclick="selTraffic(${i}, 'green')"></div>
+                                    <div class="traffic-btn bg-yellow" onclick="selTraffic(${i}, 'yellow')"></div>
+                                    <div class="traffic-btn bg-red" onclick="selTraffic(${i}, 'red')"></div>
+                                </div>
+                            </div>`;
+                });
+            } else if (data.type === 'checklist') {
+                data.items.forEach((item) => {
+                    html += `<div class="checklist-item" onclick="toggleCheck(this)" data-correct="${item.correct}">
+                                <div class="check-box"></div>
+                                <span>${item.text}</span>
+                            </div>`;
+                });
+            }
+
+            html += `<div id="feedback" class="feedback-area"></div>
+                     <button id="btnCheck" class="btn-action" onclick="validate()">Verificar respuesta</button>
+                     <button class="btn-action btn-back" onclick="location.reload()">Salir al menú</button>`;
+
+            container.innerHTML = html;
+            wireUiSounds();
+        }
+
+        let trafficAns = {};
+
+        function selTraffic(idx, color) {
+            trafficAns[idx] = color;
+            const row = document.getElementById(`row-${idx}`);
+            row.querySelectorAll('.traffic-btn').forEach(b => b.classList.remove('active'));
+            row.querySelector(`.bg-${color}`).classList.add('active');
+            playSound('click');
+        }
+
+        function toggleCheck(el) {
+            el.classList.toggle('selected');
+            el.querySelector('.check-box').innerText = el.classList.contains('selected') ? '✓' : '';
+
+            if (el.classList.contains('selected')) {
+                el.style.borderColor = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.background = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.borderColor = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.color = 'white';
+            } else {
+                el.style.borderColor = 'transparent';
+                el.querySelector('.check-box').style.background = 'transparent';
+                el.querySelector('.check-box').style.borderColor = '#ccc';
+            }
+
+            playSound('click');
+        }
+
+        function validate() {
+            const data = modules[currentModule][currentIndex];
+            const feedback = document.getElementById('feedback');
+            let isCorrect = false;
+
+            if (data.type === 'text') {
+                const val = document.getElementById('txtInput').value;
+                isCorrect = data.validation(val);
+            } else if (data.type === 'blanks') {
+                const inputs = document.querySelectorAll('.fill-input');
+                let hits = 0;
+                inputs.forEach(inp => {
+                    const v = normalizar(inp.value);
+                    const ans = normalizar(inp.dataset.ans);
+                    if (v.length > 1 && ans.startsWith(v.slice(0, Math.max(2, Math.min(v.length, ans.length))))) hits++;
+                });
+                isCorrect = (hits === data.blanks.length);
+            } else if (data.type === 'traffic') {
+                let hits = 0;
+                data.items.forEach((item, i) => { if (trafficAns[i] === item.color) hits++; });
+                isCorrect = (hits === data.items.length);
+            } else if (data.type === 'checklist') {
+                let correct = true;
+                document.querySelectorAll('.checklist-item').forEach(item => {
+                    const sel = item.classList.contains('selected');
+                    const should = item.dataset.correct === 'true';
+                    if (sel !== should) correct = false;
+                });
+                isCorrect = correct;
+            }
+
+            feedback.style.display = 'block';
+
+            if (isCorrect) {
+                playAudio('correcto');
+                playSound('success');
+                feedback.className = 'feedback-area feedback-success';
+                feedback.innerHTML = `<strong>¡Muy bien!</strong><br>${data.explanation}`;
+                document.getElementById('btnCheck').innerText = 'Siguiente pregunta →';
+                document.getElementById('btnCheck').onclick = () => { currentIndex++; loadActivity(); };
+            } else {
+                attemptCount++;
+
+                if (attemptCount < 2) {
+                    playAudio('error1');
+                    feedback.className = 'feedback-area feedback-retry';
+                    feedback.innerHTML = `<strong>Buen intento.</strong> Revisá tu respuesta. Pista: ${data.tutor}`;
+                } else {
+                    playAudio('error2');
+                    feedback.className = 'feedback-area feedback-fail';
+                    feedback.innerHTML = `<strong>No pasa nada, aprendamos juntos:</strong><br>${data.explanation}`;
+                    document.getElementById('btnCheck').innerText = 'Entendido, continuar →';
+                    document.getElementById('btnCheck').onclick = () => { currentIndex++; loadActivity(); };
+                }
+            }
+        }
+
+        function replayTutorMessage() {
+            // Replay del último audio de módulo reproducido
+            if (lastAudioModule) {
+                const audioKey = moduloAudioMap[lastAudioModule];
+                if (audioKey) {
+                    playAudio(audioKey);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
