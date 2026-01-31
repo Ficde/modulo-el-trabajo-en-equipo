@@ -642,8 +642,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('formación') || v.includes('normalización')) &&
-                    (v.includes('conflicto') || v.includes('rendimiento') || v.includes('etapas'))
+                    (v.includes('equip') || v.includes('distint')) &&
+                    (v.includes('etap') || v.includes('rendimient') || v.includes('comunica'))
                 );
             },
             tutor: 'Pensá si los equipos nacen siendo productivos.',
@@ -732,8 +732,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('expansión') || v.includes('regresión')) &&
-                    (v.includes('demandas') || v.includes('equipo') || v.includes('responder') || v.includes('pierde') || v.includes('motivación'))
+                    (v.includes('equip') || v.includes('regresi')) &&
+                    (v.includes('demandas') || v.includes('aparece') || v.includes('responder') || v.includes('pierde') || v.includes('motivación'))
                 );
             },
             tutor: 'Pensá qué pasa cuando las demandas superan las capacidades.',
@@ -789,8 +789,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('liderazgo') || v.includes('acompañamiento')) &&
-                    (v.includes('equipo') || v.includes('influye') || v.includes('adaptando'))
+                    (v.includes('lider') || v.includes('acompa')) &&
+                    (v.includes('equip') || v.includes('etap') || v.includes('adaptando'))
                 );
             },
             tutor: 'Pensá cómo influye el líder en cada etapa.',
@@ -808,11 +808,11 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    v.includes('incoherencia') ||
+                    v.includes('ause') ||
                     (
-                        (v.includes('conjunto') || v.includes('laboral') || v.includes('realiza')) &&
-                        (v.includes('personas') || v.includes('tareas') || v.includes('espacio')) &&
-                        (v.includes('coordinación') || v.includes('objetivos') || v.includes('interdependencia') || v.includes('comunes'))
+                        (v.includes('objet') || v.includes('grup') || v.includes('realiza')) &&
+                        (v.includes('personas') || v.includes('tareas') || v.includes('equip')) &&
+                        (v.includes('coordinación') || v.includes('social') || v.includes('interdependencia') || v.includes('comunes'))
                     )
                 );
             },
@@ -840,8 +840,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('equipo') || v.includes('integrantes')) &&
-                    (v.includes('evitan') || v.includes('ideas') || v.includes('críticas'))
+                    (v.includes('equipo') || v.includes('integrant')) &&
+                    (v.includes('confianz') || v.includes('limit') || v.includes('rendimient'))
                 );
             },
             tutor: 'Pensá qué pasa cuando no hay confianza.',
@@ -870,8 +870,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('equipo') || v.includes('horas') || v.includes('alcanza')) &&
-                    (v.includes('cumple') || v.includes('trabajo') || v.includes('muchas'))
+                    (v.includes('falt') || v.includes('tiemp') || v.includes('enfo')) &&
+                    (v.includes('organiz') || v.includes('afect') || v.includes('product'))
                 );
             },
             tutor: 'Pensá si el problema es tiempo o enfoque.',
@@ -898,8 +898,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('muestra') || v.includes('frecuentes')) &&
-                    (v.includes('desmotivación') || v.includes('falta') || v.includes('compromiso') || v.includes('conflictos'))
+                    (v.includes('señal') || v.includes('indic')) &&
+                    (v.includes('equip') || v.includes('regresi') || v.includes('compromiso') || v.includes('conflictos'))
                 );
             },
             tutor: 'Pensá si el equipo avanza o retrocede.',
@@ -928,9 +928,9 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('Durante') || v.includes('etapa')) &&
-                    (v.includes('proyecto') || v.includes('surgen') || v.includes('decisiones')) &&
-                    (v.includes('desacuerdos') || v.includes('roles') || v.includes('reorganizar'))
+                    (v.includes('conflic') || v.includes('part')) &&
+                    (v.includes('proces') || v.includes('natur') || v.includes('decisiones')) &&
+                    (v.includes('permit') || v.includes('reogani') || v.includes('funcionamient'))
                 );
             },
             tutor: 'Pensá si el conflicto puede ser parte del proceso.',
@@ -988,7 +988,7 @@ const modules = {
             badge: 'Equipo de trabajo',
             title: 'Bases del compromiso',
             instruction: 'Completá las frases.<br>El compromiso aumenta cuando existe ______ entre los integrantes<br>La participación se favorece con ______ clara<br>La confianza se sostiene con ______',
-            blanks: ['cohesión', 'comunicación', 'coherencia'],
+            blanks: ['cohesion', 'comunicacion', 'coherencia'],
             tutor: 'Pensá en qué condiciones te sentís parte.',
             explanation: 'Cohesión, comunicación y coherencia sostienen el compromiso.'
         },
@@ -1013,8 +1013,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('productividad') || v.includes('prioridades')) &&
-                    (v.includes('objetivos') || v.includes('resultados') || v.includes('esfuerzo') || v.includes('mejora'))
+                    (v.includes('producti') || v.includes('prioridad')) &&
+                    (v.includes('objetiv') || v.includes('resultad') || v.includes('clar') || v.includes('mejor'))
                 );
             },
             tutor: 'Pensá si todo esfuerzo produce resultados.',
@@ -1043,8 +1043,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('conflicto') || v.includes('diálogo') || v.includes('mejora')) &&
-                    (v.includes('gestionado') || v.includes('acuerdos') || v.includes('fortalecer') || v.includes('útil'))
+                    (v.includes('conflicto') || v.includes('dialog') || v.includes('mejora')) &&
+                    (v.includes('gestion') || v.includes('equip') || v.includes('fortalecer') || v.includes('acuerd'))
                 );
             },
             tutor: 'Pensá si el conflicto puede ser útil.',
@@ -1071,7 +1071,7 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('expansión') || v.includes('regresión') || v.includes('avanza')) &&
+                    (v.includes('identifi') || v.includes('motiva') || v.includes('resultad')) &&
                     (v.includes('clima') || v.includes('estanca') || v.includes('motivación')) &&
                     (v.includes('resultados') || v.includes('permiten') || v.includes('identificar'))
                 );
